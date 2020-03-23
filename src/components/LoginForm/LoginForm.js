@@ -1,26 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export default function LoginForm () {
-  const [username, setUsername] = useState('');
-
-  function changeHandler(e) {
-    setUsername(e.target.value);
-  }
-
-  function submitHandler(e) {
-    e.preventDefault();
-    console.log(username);
-  }
+export default function LoginForm ({ value, onChange, onSubmit }) {
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={onSubmit}>
       <fieldset>
         <legend>Your name</legend>
         <p>
           <input
             type="text"
-            value={username}
+            value={value}
+            onChange={onChange}
             placeholder="Type your nickname"
-            onChange={changeHandler}
           />
         </p>
         <p>
