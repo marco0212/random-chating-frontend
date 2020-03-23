@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function ChatPlayground() {
+export default function ChatPlayground({ chats }) {
   const [text, setText] = useState('');
 
   function inputChangeHandler(e) {
@@ -15,12 +15,23 @@ export default function ChatPlayground() {
   return (
     <main>
       <ul>
-        <li className="message-wrapper from">
+        {
+          chats.map(chat => {
+            const {} = chat;
+            
+            return (
+              <li className="message-wrapper from">
+                <div className="message">{chat.message}</div>
+              </li>
+            );
+          })
+        }
+        {/* <li className="message-wrapper from">
           <div className="message">Hello, What your name?</div>
         </li>
         <li className="message-wrapper to">
           <div className="message">Hi, My name is Jeong</div>
-        </li>
+        </li> */}
       </ul>
       <form onSubmit={formSubmitHandler}>
         <input type="text" value={text} onChange={inputChangeHandler} />

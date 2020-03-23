@@ -10,10 +10,11 @@ export default function App () {
   const [room, setRoom] = useState('');
   const [chats, setChats] = useState([]);
 
-  socket.on('chat start', (data) => {
+  socket.on('chat start', data => {
     const { name, roomId } = data;
 
     setRoom(roomId);
+    log(`${name} is Joined. Enjoy!`);
   });
 
   function onNicknameInputHandler(e) {
@@ -23,6 +24,17 @@ export default function App () {
   function onLoginFormSubmitHandler(e) {
     e.preventDefault();
     socket.emit('login', nickname);
+  }
+
+  function log(message) {
+    const chat = {
+      type: 'LOG',
+      message
+    };
+    const copyChats = chats.slice();
+
+    copyChats.push(chat);
+    setChats(copyChats);
   }
   return (
     <div className="App">
