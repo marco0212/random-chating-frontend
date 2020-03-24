@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addChat, resetChat } from '../actions';
 
 const mapStateToProps = state => ({
-  chat: state.chat
+  chats: state.chats
 });
 const mapDispatchToProps = dispatch => ({
   addChat: (chat) => dispatch(addChat(chat)),

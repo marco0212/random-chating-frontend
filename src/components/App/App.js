@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import styled from 'styled-components';
 import Header from '../Header/Header';
@@ -7,39 +7,46 @@ import LoginForm from '../LoginForm/LoginForm';
 
 const socket = io.connect('http://localhost:8080');
 
-export default function App () {
+export default function App ({ chats, addChat, resetChat}) {
   const [username, setUsername] = useState('');
   const [peerName, setPeerName] = useState('');
   const [chatText, setChatText] = useState('');
-  const [chats, setChats] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
   const [isPending, setIsPending] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
 
-  socket.on('chat start', peerName => {
-    const message = `${peerName} joined.`;
-    const chatEle = createChatEle('log', message);
+  useEffect(() => {
+    socket.on('chat start', peerName => {
+      const message = `${peerName} joined.`;
+      const chatEle = ChatCreator('log', message);
 
-    setIsPending(false);
-    setPeerName(peerName);
-    appendChatEle(chatEle);
-  });
+      setIsPending(false);
+      setPeerName(peerName);
+      addChat(chatEle);
+    });
 
-  socket.on('typing', () => {
-    
-  });
+    socket.on('typing', () => {
+      setIsTyping(true);
+    });
 
-  socket.on('chat end', () => {
-    const message = `${peerName} left.`;
-    const chatEle = createChatEle('log', message);
+    socket.on('message', message => {
+      const chatEle = ChatCreator('from', message);
 
-    appendChatEle(chatEle);
-  });
+      setIsTyping(false);
+      addChat(chatEle);
+    });
+  }, []);
 
-  socket.on('message', message => {
-    const chatEle = createChatEle('from', message);
+  useEffect(() => {
+    if (peerName) {
+      socket.on('chat end', () => {
+        const message = `${peerName} left.`;
+        const chatEle = ChatCreator('log', message);
 
-    appendChatEle(chatEle);
-  });
+        addChat(chatEle);
+      });
+    }
+  }, [peerName])
 
   function usernameChangeHandler (e) {
     setUsername(e.target.value);
@@ -47,8 +54,11 @@ export default function App () {
 
   function usernameSubmitHandler (e) {
     e.preventDefault();
-    setIsLogin(true);
-    socket.emit('login', username);
+
+    if (username.trim()) {
+      setIsLogin(true);
+      socket.emit('login', username);
+    }
   }
 
   function chatChangeHandler (e) {
@@ -58,37 +68,37 @@ export default function App () {
 
   function chatSubmitHandler (e) {
     e.preventDefault();
-    const chatEle = createChatEle('to', chatText);
 
-    appendChatEle(chatEle);
-    socket.emit('message', chatText);
-    setChatText('');
+    if (chatText.trim()) {
+      const chatEle = ChatCreator('to', chatText);
+
+      addChat(chatEle);
+      socket.emit('message', chatText);
+      setChatText('');
+    }
   }
 
   function nextClickHandler () {
     socket.emit('leave room');
-    setChats([]);
+    resetChat();
     setIsPending(true);
   }
 
-  function createChatEle(type, message) {
+  function ChatCreator(type, message) {
     return { type, message };
-  }
-
-  function appendChatEle(ele) {
-    const copyChats = chats.slice();
-
-    copyChats.push(ele);
-    setChats(copyChats);
   }
   return (
     <>
-      <Header isPending={isPending} onButtonClick={nextClickHandler}/>
+      <Header
+        isPending={isPending}
+        onButtonClick={nextClickHandler}
+      />
       <Main>
         {
           isLogin ? (
             <ChatForm
               chats={chats}
+              isTyping={isTyping}
               isPending={isPending}
               InputValue={chatText}
               onChangeHandler={chatChangeHandler}

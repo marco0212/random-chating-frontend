@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 export default function ChatForm({
   chats,
+  isTyping,
   isPending,
   InputValue,
   onChangeHandler,
@@ -12,7 +13,11 @@ export default function ChatForm({
     <ChatFormWrapper onSubmit={onSubmitHandler}>
       <ul>
         {
-          isPending && 'Looking for peer'
+          isPending && (
+            <Message type="log">
+              <p>Looking for peer</p>
+            </Message>
+          )
         }
         {
           chats.map((chat, index) => {
@@ -24,6 +29,13 @@ export default function ChatForm({
               </Message>
             )
           })
+        }
+        {
+          isTyping && (
+            <Message type="typing">
+              <p>Typing...</p>
+            </Message>
+          )
         }
       </ul>
       <InputGroup>
@@ -79,8 +91,8 @@ const Message = styled.li`
   &:last-child {
     margin-bottom: 0;
   }
-
   & p {
+    text-align: left;
     ${props => {
       if (props.type === 'log') {
         return 'font-weight: bold;font-style: italic;';
@@ -95,6 +107,5 @@ const Message = styled.li`
         );
       }
     }}
-    text-align: left;
   }
 `;
