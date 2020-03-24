@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { chatTypes } from '../../constants';
+
+const { LOG, TO, TYPING } = chatTypes;
 
 export default function ChatForm({
   chats,
@@ -14,7 +17,7 @@ export default function ChatForm({
       <ul>
         {
           isPending && (
-            <Message type="log">
+            <Message type={LOG}>
               <p>Looking for peer</p>
             </Message>
           )
@@ -32,7 +35,7 @@ export default function ChatForm({
         }
         {
           isTyping && (
-            <Message type="typing">
+            <Message type={TYPING}>
               <p>Typing...</p>
             </Message>
           )
@@ -85,7 +88,7 @@ export const InputGroup = styled.p`
   }
 `;
 const Message = styled.li`
-  ${props => props.type === 'to' && 'text-align: right;'}
+  ${props => props.type === TO && 'text-align: right;'}
   margin-bottom: 10px;
   word-break: break-all;
   &:last-child {
@@ -94,7 +97,7 @@ const Message = styled.li`
   & p {
     text-align: left;
     ${props => {
-      if (props.type === 'log') {
+      if (props.type === LOG) {
         return 'font-weight: bold;font-style: italic;';
       } else {
         return (

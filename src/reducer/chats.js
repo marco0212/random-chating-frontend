@@ -1,5 +1,6 @@
-import { ADD_CHAT, RESET_CHAT } from "../constants";
+import { actionTypes } from "../constants";
 
+const { ADD_CHAT, RESET_CHAT } = actionTypes;
 const initialState = [];
 
 export default function (state = initialState, action) {

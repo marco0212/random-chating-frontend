@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Header from '../Header/Header';
 import ChatForm from '../ChatForm/ChatForm';
 import LoginForm from '../LoginForm/LoginForm';
+import { eventNames, chatTypes } from '../../constants';
 
 const socket = io.connect('http://localhost:8080');
 
@@ -14,23 +15,25 @@ export default function App ({ chats, addChat, resetChat}) {
   const [isLogin, setIsLogin] = useState(false);
   const [isPending, setIsPending] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
+  const { LOGIN, MESSAGE, CHAT_START, TYPING, CHAT_END, LEAVE_ROOM } = eventNames;
+  const { LOG, FROM, TO } = chatTypes;
 
   useEffect(() => {
-    socket.on('chat start', peerName => {
+    socket.on(CHAT_START, peerName => {
       const message = `${peerName} joined.`;
-      const chatEle = ChatCreator('log', message);
+      const chatEle = ChatCreator(LOG, message);
 
       setIsPending(false);
       setPeerName(peerName);
       addChat(chatEle);
     });
 
-    socket.on('typing', () => {
+    socket.on(TYPING, () => {
       setIsTyping(true);
     });
 
-    socket.on('message', message => {
-      const chatEle = ChatCreator('from', message);
+    socket.on(MESSAGE, message => {
+      const chatEle = ChatCreator(FROM, message);
 
       setIsTyping(false);
       addChat(chatEle);
@@ -39,9 +42,9 @@ export default function App ({ chats, addChat, resetChat}) {
 
   useEffect(() => {
     if (peerName) {
-      socket.on('chat end', () => {
+      socket.on(CHAT_END, () => {
         const message = `${peerName} left.`;
-        const chatEle = ChatCreator('log', message);
+        const chatEle = ChatCreator(LOG, message);
 
         addChat(chatEle);
       });
@@ -57,29 +60,29 @@ export default function App ({ chats, addChat, resetChat}) {
 
     if (username.trim()) {
       setIsLogin(true);
-      socket.emit('login', username);
+      socket.emit(LOGIN, username);
     }
   }
 
   function chatChangeHandler (e) {
     setChatText(e.target.value);
-    socket.emit('typing');
+    socket.emit(TYPING);
   }
 
   function chatSubmitHandler (e) {
     e.preventDefault();
 
     if (chatText.trim()) {
-      const chatEle = ChatCreator('to', chatText);
+      const chatEle = ChatCreator(TO, chatText);
 
       addChat(chatEle);
-      socket.emit('message', chatText);
+      socket.emit(MESSAGE, chatText);
       setChatText('');
     }
   }
 
   function nextClickHandler () {
-    socket.emit('leave room');
+    socket.emit(LEAVE_ROOM);
     resetChat();
     setIsPending(true);
   }
