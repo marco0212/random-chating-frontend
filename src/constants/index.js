@@ -1,2 +1,2 @@
-export const CREATE_USER = 'CREATE_USER';
-export const UPDATE_USER = 'UPDATE_USER';
+export const ADD_CHAT = 'ADD_CHAT';
+export const RESET_CHAT = 'RESET_CHAT';
