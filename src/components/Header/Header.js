@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export default function Header({ isPending, onButtonClick }) {
   return (
     <HeaderWrapper>
-      <h1>Hang out new friends</h1>
+      <h1>Hello Stranger?</h1>
       {
         !isPending && <button onClick={onButtonClick}>next</button>
       }
@@ -25,6 +25,7 @@ const HeaderWrapper = styled.header`
     padding: 0 20px;
     font-size: 16px;
     border-radius: 5px;
+    background-color: #eee;
     text-transform: uppercase;
   }
 `;
