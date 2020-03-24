@@ -45,7 +45,7 @@ export default function App ({
       updateIsTyping(false);
       addChat(chatEle);
     });
-  }, []);
+  }, [CHAT_START, FROM, LOG, MESSAGE, TYPING, addChat, updateIsPending, updateIsTyping]);
 
   useEffect(() => {
     if (peerName) {
@@ -56,7 +56,7 @@ export default function App ({
         addChat(chatEle);
       });
     }
-  }, [peerName])
+  }, [CHAT_END, LOG, addChat, peerName])
 
   function usernameChangeHandler (e) {
     setUsername(e.target.value);
