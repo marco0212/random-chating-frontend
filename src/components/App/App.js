@@ -8,13 +8,20 @@ import { eventNames, chatTypes } from '../../constants';
 
 const socket = io.connect('http://localhost:8080');
 
-export default function App ({ chats, addChat, resetChat}) {
+export default function App ({
+  chats, 
+  isLogin,
+  isPending,
+  isTyping,
+  addChat,
+  resetChat,
+  updateIsLogin,
+  updateIsPending,
+  updateIsTyping
+}) {
   const [username, setUsername] = useState('');
   const [peerName, setPeerName] = useState('');
   const [chatText, setChatText] = useState('');
-  const [isLogin, setIsLogin] = useState(false);
-  const [isPending, setIsPending] = useState(true);
-  const [isTyping, setIsTyping] = useState(false);
   const { LOGIN, MESSAGE, CHAT_START, TYPING, CHAT_END, LEAVE_ROOM } = eventNames;
   const { LOG, FROM, TO } = chatTypes;
 
@@ -23,19 +30,19 @@ export default function App ({ chats, addChat, resetChat}) {
       const message = `${peerName} joined.`;
       const chatEle = ChatCreator(LOG, message);
 
-      setIsPending(false);
+      updateIsPending(false);
       setPeerName(peerName);
       addChat(chatEle);
     });
 
     socket.on(TYPING, () => {
-      setIsTyping(true);
+      updateIsTyping(true);
     });
 
     socket.on(MESSAGE, message => {
       const chatEle = ChatCreator(FROM, message);
 
-      setIsTyping(false);
+      updateIsTyping(false);
       addChat(chatEle);
     });
   }, []);
@@ -59,7 +66,7 @@ export default function App ({ chats, addChat, resetChat}) {
     e.preventDefault();
 
     if (username.trim()) {
-      setIsLogin(true);
+      updateIsLogin(true);
       socket.emit(LOGIN, username);
     }
   }
@@ -84,7 +91,7 @@ export default function App ({ chats, addChat, resetChat}) {
   function nextClickHandler () {
     socket.emit(LEAVE_ROOM);
     resetChat();
-    setIsPending(true);
+    updateIsPending(true);
   }
 
   function ChatCreator(type, message) {

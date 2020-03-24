@@ -1,5 +1,8 @@
 const ADD_CHAT = 'ADD_CHAT';
 const RESET_CHAT = 'RESET_CHAT';
+const UPDATE_IS_LOGIN = 'UPDATE_IS_LOGIN';
+const UPDATE_IS_PENDING = 'UPDATE_IS_PENDING';
+const UPDATE_IS_TYPING = 'UPDATE_IS_TYPING';
 const LOGIN = 'LOGIN'
 const MESSAGE = 'MESSAGE';
 const TYPING = 'TYPING';
@@ -12,7 +15,10 @@ const TO = 'TO';
 
 export const actionTypes = {
   ADD_CHAT,
-  RESET_CHAT
+  RESET_CHAT,
+  UPDATE_IS_LOGIN,
+  UPDATE_IS_PENDING,
+  UPDATE_IS_TYPING
 };
 
 export const eventNames = {
