@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import io from 'socket.io-client';
-
+import styled from 'styled-components';
 const socket = io.connect('http://localhost:8080');
 
 export default function App () {
@@ -8,11 +8,14 @@ export default function App () {
   const [peerName, setPeerName] = useState('');
   const [chatText, setChatText] = useState('');
   const [chats, setChats] = useState([]);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isPending, setIsPending] = useState(true);
 
   socket.on('chat start', peerName => {
     const message = `${peerName} was join.`;
     const chatEle = createChatEle('log', message);
 
+    setIsPending(false);
     setPeerName(peerName);
     appendChatEle(chatEle);
   });
@@ -39,6 +42,7 @@ export default function App () {
 
   function usernameSubmitHandler (e) {
     e.preventDefault();
+    setIsLogin(true);
     socket.emit('login', username);
   }
 
@@ -55,6 +59,11 @@ export default function App () {
     socket.emit('message', chatText);
   }
 
+  function nextClickHandler () {
+    socket.emit('leave room');
+    setIsPending(true);
+  }
+
   function createChatEle(type, message) {
     return { type, message };
   }
@@ -65,45 +74,77 @@ export default function App () {
     copyChats.push(ele);
     setChats(copyChats);
   }
-
-  function next () {
-    socket.emit('leave room');
-  }
   return (
-    <div>
-      <button onClick={next}>next</button>
-      <form onSubmit={usernameSubmitHandler}>
-        <fieldset>
-          <legend>Set your nickname</legend>
-          <p>
-            <input type="text" value={username} onChange={usernameChangeHandler} />
-          </p>
-          <p>
-            <button type="submit">Submit</button>
-          </p>
-        </fieldset>
-      </form>
-      <form onSubmit={chatSubmitHandler}>
-        <fieldset>
-          <legend>Chat Area</legend>
-          <ul>
-            {
-              chats.map((chat, index) => {
-                const { type, message } = chat;
-                return (
-                  <li key={`chat-${index}`}>{ message }</li>
-                )
-              })
-            }
-          </ul>
-          <p>
-            <input type="text" value={chatText} onChange={chatChangeHandler}/>
-          </p>
-          <p>
-            <button type="submit">Submit</button>
-          </p>
-        </fieldset>
-      </form>
-    </div>
+    <>
+      <Header>
+        <h1>Hang out new friends</h1>
+        {
+          !isPending && <button onClick={nextClickHandler}>next</button>
+        }
+      </Header>
+      <Main>
+        {
+          isLogin ? (
+            <form onSubmit={chatSubmitHandler}>
+              <fieldset>
+                <legend>Chat Area</legend>
+                <ul>
+                  {
+                    chats.map((chat, index) => {
+                      const { type, message } = chat;
+                      return (
+                        <li key={`chat-${index}`}>{ message }</li>
+                      )
+                    })
+                  }
+                </ul>
+                <p>
+                  <input type="text" value={chatText} onChange={chatChangeHandler}/>
+                </p>
+                <p>
+                  <button type="submit">Submit</button>
+                </p>
+              </fieldset>
+              {
+                isPending && "Pending..."
+              }
+            </form>
+          ) : (
+            <form onSubmit={usernameSubmitHandler}>
+              <fieldset>
+                <legend>Set your nickname</legend>
+                <p>
+                  <input type="text" value={username} onChange={usernameChangeHandler} />
+                </p>
+                <p>
+                  <button type="submit">Submit</button>
+                </p>
+              </fieldset>
+            </form>
+          )
+        }
+      </Main>
+    </>
   )
 }
+
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  background-color: #ebebeb;
+  padding: 20px;
+  & h1 {
+    font-size: 20px;
+  }
+  & button {
+    border: 0;
+    padding: 0 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-transform: uppercase;
+  }
+`;
+const Main = styled.main`
+  flex: 1;
+  display: flex;
+`;
