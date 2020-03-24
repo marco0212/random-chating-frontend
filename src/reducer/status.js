@@ -12,7 +12,7 @@ const initialState = {
   isTyping: false
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case UPDATE_IS_LOGIN:
       return {

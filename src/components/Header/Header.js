@@ -1,4 +1,5 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import styled from 'styled-components';
 
 export default function Header({ isPending, onButtonClick }) {
@@ -29,3 +30,8 @@ const HeaderWrapper = styled.header`
     text-transform: uppercase;
   }
 `;
+
+Header.propTypes = {
+  isPending: propTypes.bool,
+  onButtonClick: propTypes.func
+};

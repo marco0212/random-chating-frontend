@@ -20,7 +20,6 @@ export const actionTypes = {
   UPDATE_IS_PENDING,
   UPDATE_IS_TYPING
 };
-
 export const eventNames = {
   LOGIN,
   MESSAGE,
@@ -29,7 +28,6 @@ export const eventNames = {
   CHAT_END,
   LEAVE_ROOM
 };
-
 export const chatTypes = {
   LOG,
   FROM,

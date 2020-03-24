@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import propTypes from 'prop-types';
 import io from 'socket.io-client';
 import styled from 'styled-components';
 import Header from '../Header/Header';
@@ -9,7 +10,7 @@ import { eventNames, chatTypes } from '../../constants';
 const socket = io.connect('http://localhost:8080');
 
 export default function App ({
-  chats, 
+  chats,
   isLogin,
   isPending,
   isTyping,
@@ -133,3 +134,15 @@ const Main = styled.main`
   background-color: #eee;
   padding: 20px;
 `;
+
+App.propTypes = {
+  chats: propTypes.array,
+  isLogin: propTypes.bool,
+  isPending: propTypes.bool,
+  isTyping: propTypes.bool,
+  addChat: propTypes.func,
+  resetChat: propTypes.func,
+  updateIsLogin: propTypes.func,
+  updateIsPending: propTypes.func,
+  updateIsTyping: propTypes.func
+};

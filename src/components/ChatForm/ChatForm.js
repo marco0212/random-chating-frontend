@@ -1,4 +1,5 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import styled from 'styled-components';
 import { chatTypes } from '../../constants';
 
@@ -71,7 +72,6 @@ export const InputGroup = styled.p`
   display: flex;
   border-radius: 4px;
   overflow: hidden;
-
   & input, & button {
     border: 0;
     font-size: inherit;
@@ -112,3 +112,12 @@ const Message = styled.li`
     }}
   }
 `;
+
+ChatForm.propTypes = {
+  chats: propTypes.array,
+  isTyping: propTypes.bool,
+  isPending: propTypes.bool,
+  InputValue: propTypes.bool,
+  onChangeHandler: propTypes.func,
+  onSubmitHandler: propTypes.func
+};

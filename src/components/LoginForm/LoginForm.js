@@ -1,4 +1,5 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import styled from 'styled-components';
 import { InputGroup, Form } from '../ChatForm/ChatForm';
 
@@ -25,3 +26,9 @@ export default function LoginForm ({
 const LoginFormWrapper = styled(Form)`
   margin: auto;
 `;
+
+LoginForm.propTypes = {
+  InputValue: propTypes.string,
+  onChangeHandler: propTypes.func,
+  onSubmitHandler: propTypes.func
+};
