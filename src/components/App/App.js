@@ -12,7 +12,7 @@ export default function App () {
   const [isPending, setIsPending] = useState(true);
 
   socket.on('chat start', peerName => {
-    const message = `${peerName} was join.`;
+    const message = `${peerName} joined.`;
     const chatEle = createChatEle('log', message);
 
     setIsPending(false);
@@ -24,8 +24,8 @@ export default function App () {
     
   });
 
-  socket.on('leave room', () => {
-    const message = `${peerName} was leave.`;
+  socket.on('chat end', () => {
+    const message = `${peerName} left.`;
     const chatEle = createChatEle('log', message);
 
     appendChatEle(chatEle);
@@ -33,6 +33,7 @@ export default function App () {
 
   socket.on('message', message => {
     const chatEle = createChatEle('from', message);
+
     appendChatEle(chatEle);
   });
 
@@ -85,42 +86,35 @@ export default function App () {
       <Main>
         {
           isLogin ? (
-            <form onSubmit={chatSubmitHandler}>
-              <fieldset>
-                <legend>Chat Area</legend>
-                <ul>
-                  {
-                    chats.map((chat, index) => {
-                      const { type, message } = chat;
-                      return (
-                        <li key={`chat-${index}`}>{ message }</li>
-                      )
-                    })
-                  }
-                </ul>
-                <p>
-                  <input type="text" value={chatText} onChange={chatChangeHandler}/>
-                </p>
-                <p>
-                  <button type="submit">Submit</button>
-                </p>
-              </fieldset>
-              {
-                isPending && "Pending..."
-              }
-            </form>
+            <ChatForm onSubmit={chatSubmitHandler}>
+              <ul>
+                {
+                  isPending && 'Looking for peer'
+                }
+                {
+                  chats.map((chat, index) => {
+                    const { type, message } = chat;
+
+                    return (
+                      <Message key={`chat-${index}`} type={type}>
+                        <p>{message}</p>
+                      </Message>
+                    )
+                  })
+                }
+              </ul>
+              <InputGroup>
+                <input type="text" value={chatText} onChange={chatChangeHandler}/>
+                <button type="submit">Submit</button>
+              </InputGroup>
+            </ChatForm>
           ) : (
-            <form onSubmit={usernameSubmitHandler}>
-              <fieldset>
-                <legend>Set your nickname</legend>
-                <p>
-                  <input type="text" value={username} onChange={usernameChangeHandler} />
-                </p>
-                <p>
-                  <button type="submit">Submit</button>
-                </p>
-              </fieldset>
-            </form>
+            <LoginForm onSubmit={usernameSubmitHandler}>
+              <InputGroup>
+                <input type="text" value={username} onChange={usernameChangeHandler} placeholder="Type your nickname"/>
+                <button type="submit">Submit</button>
+              </InputGroup>
+            </LoginForm>
           )
         }
       </Main>
@@ -131,7 +125,7 @@ export default function App () {
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
-  background-color: #ebebeb;
+  background-color: #fff;
   padding: 20px;
   & h1 {
     font-size: 20px;
@@ -147,4 +141,69 @@ const Header = styled.header`
 const Main = styled.main`
   flex: 1;
   display: flex;
+  background-color: #eee;
+  padding: 20px;
+`;
+const Form = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+const LoginForm = styled(Form)`
+  margin: auto;
+`;
+const ChatForm = styled(Form)`
+  & > ul {
+    flex: 1;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 21px;
+  }
+`;
+const Message = styled.li`
+  ${props => props.type === 'to' && 'text-align: right;'}
+  margin-bottom: 10px;
+  word-break: break-all;
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  & p {
+    ${props => {
+      if (props.type === 'log') {
+        return 'font-weight: bold;font-style: italic;';
+      } else {
+        return (
+          'display: inline-block;' +
+          'max-width: 70%;' +
+          'line-height: 21px;' +
+          'padding: 5px 15px;' +
+          'border-radius: 5px;' +
+          'box-shadow: 0px 0px 5px rgba(0, 0, 0, .2);'
+        );
+      }
+    }}
+    text-align: left;
+  }
+`;
+const InputGroup = styled.p`
+  display: flex;
+  border-radius: 4px;
+  overflow: hidden;
+
+  & input, & button {
+    border: 0;
+    font-size: inherit;
+    line-height: 40px;
+    height: 40px;
+    padding: 0 15px;
+  }
+  & input {
+    flex: 1;
+  }
+  & button {
+    background-color: #666;
+    color: #fff;
+  }
 `;
