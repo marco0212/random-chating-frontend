@@ -31,7 +31,7 @@ export default function ChatForm({
               <Message key={`chat-${index}`} type={type}>
                 <p>{message}</p>
               </Message>
-            )
+            );
           })
         }
         {
@@ -105,12 +105,12 @@ const Message = styled.li`
         return 'font-weight: bold;font-style: italic;';
       } else {
         return (
-          'display: inline-block;' +
-          'max-width: 70%;' +
-          'line-height: 21px;' +
-          'padding: 5px 15px;' +
-          'border-radius: 5px;' +
-          'box-shadow: 0px 0px 5px rgba(0, 0, 0, .2);'
+          'display: inline-block;'
+          + 'max-width: 70%;'
+          + 'line-height: 21px;'
+          + 'padding: 5px 15px;'
+          + 'border-radius: 5px;'
+          + 'box-shadow: 0px 0px 5px rgba(0, 0, 0, .2);'
         );
       }
     }}

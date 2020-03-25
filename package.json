@@ -11,7 +11,8 @@
     "redux": "^4.0.5",
     "reset-css": "^5.0.1",
     "socket.io-client": "^2.3.0",
-    "styled-components": "^5.0.1"
+    "styled-components": "^5.0.1",
+    "redux-logger": "^3.0.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -38,7 +39,6 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "eslint": "^6.8.0",
-    "redux-logger": "^3.0.6"
+    "eslint": "^6.8.0"
   }
 }

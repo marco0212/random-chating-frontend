@@ -1,5 +1,5 @@
-import App from '../components/App/App';
 import { connect } from 'react-redux';
+import App from '../components/App/App';
 import {
   addChat,
   resetChat,
@@ -8,13 +8,13 @@ import {
   updateIsTyping
 } from '../actions';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   chats: state.chats,
   isLogin: state.status.isLogin,
   isPending: state.status.isPending,
-  isTyping: state.status.isTyping,
+  isTyping: state.status.isTyping
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   addChat: (chat) => dispatch(addChat(chat)),
   resetChat: () => dispatch(resetChat()),
   updateIsLogin: (bool) => dispatch(updateIsLogin(bool)),

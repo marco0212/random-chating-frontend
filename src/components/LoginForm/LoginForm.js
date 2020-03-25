@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import styled from 'styled-components';
 import { InputGroup, Form } from '../ChatForm/ChatForm';
 
-export default function LoginForm ({
+export default function LoginForm({
   InputValue,
   onChangeHandler,
   onSubmitHandler

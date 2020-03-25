@@ -9,7 +9,7 @@ import { eventNames, chatTypes } from '../../constants';
 
 const socket = io.connect('http://localhost:8080');
 
-export default function App ({
+export default function App({
   chats,
   isLogin,
   isPending,
@@ -23,16 +23,27 @@ export default function App ({
   const [username, setUsername] = useState('');
   const [peerName, setPeerName] = useState('');
   const [chatText, setChatText] = useState('');
-  const { LOGIN, MESSAGE, CHAT_START, TYPING, CHAT_END, LEAVE_ROOM } = eventNames;
-  const { LOG, FROM, TO } = chatTypes;
+  const {
+    LOGIN,
+    MESSAGE,
+    CHAT_START,
+    TYPING,
+    CHAT_END,
+    LEAVE_ROOM
+  } = eventNames;
+  const {
+    LOG,
+    FROM,
+    TO
+  } = chatTypes;
 
   useEffect(() => {
-    socket.on(CHAT_START, peerName => {
-      const message = `${peerName} joined.`;
+    socket.on(CHAT_START, (peerNickname) => {
+      const message = `${peerNickname} joined.`;
       const chatEle = ChatCreator(LOG, message);
 
       updateIsPending(false);
-      setPeerName(peerName);
+      setPeerName(peerNickname);
       addChat(chatEle);
     });
 
@@ -40,7 +51,7 @@ export default function App ({
       updateIsTyping(true);
     });
 
-    socket.on(MESSAGE, message => {
+    socket.on(MESSAGE, (message) => {
       const chatEle = ChatCreator(FROM, message);
 
       updateIsTyping(false);
@@ -57,13 +68,13 @@ export default function App ({
         addChat(chatEle);
       });
     }
-  }, [CHAT_END, LOG, addChat, peerName])
+  }, [CHAT_END, LOG, addChat, peerName]);
 
-  function usernameChangeHandler (e) {
+  function usernameChangeHandler(e) {
     setUsername(e.target.value);
   }
 
-  function usernameSubmitHandler (e) {
+  function usernameSubmitHandler(e) {
     e.preventDefault();
 
     if (username.trim()) {
@@ -72,12 +83,12 @@ export default function App ({
     }
   }
 
-  function chatChangeHandler (e) {
+  function chatChangeHandler(e) {
     setChatText(e.target.value);
     socket.emit(TYPING);
   }
 
-  function chatSubmitHandler (e) {
+  function chatSubmitHandler(e) {
     e.preventDefault();
 
     if (chatText.trim() && !isPending) {
@@ -89,7 +100,7 @@ export default function App ({
     }
   }
 
-  function nextClickHandler () {
+  function nextClickHandler() {
     socket.emit(LEAVE_ROOM);
     resetChat();
     updateIsPending(true);
@@ -125,7 +136,7 @@ export default function App ({
         }
       </Main>
     </>
-  )
+  );
 }
 
 const Main = styled.main`

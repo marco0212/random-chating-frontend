@@ -1,4 +1,4 @@
-import { actionTypes } from "../constants";
+import { actionTypes } from '../constants';
 
 const {
   UPDATE_IS_LOGIN,
@@ -12,7 +12,7 @@ const initialState = {
   isTyping: false
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case UPDATE_IS_LOGIN:
       return {
