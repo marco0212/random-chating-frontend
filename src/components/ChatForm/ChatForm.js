@@ -1,9 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
-import { chatTypes } from '../../constants';
-
-const { LOG, TO, TYPING } = chatTypes;
+import ChatArea from '../ChatArea/ChatArea';
 
 export default function ChatForm({
   chats,
@@ -14,34 +12,12 @@ export default function ChatForm({
   onSubmitHandler
 }) {
   return (
-    <ChatFormWrapper onSubmit={onSubmitHandler}>
-      <ul>
-        {
-          isPending && (
-            <Message type={LOG}>
-              <p>Looking for peer</p>
-            </Message>
-          )
-        }
-        {
-          chats.map((chat, index) => {
-            const { type, message } = chat;
-
-            return (
-              <Message key={`chat-${index}`} type={type}>
-                <p>{message}</p>
-              </Message>
-            );
-          })
-        }
-        {
-          isTyping && (
-            <Message type={TYPING}>
-              <p>Typing...</p>
-            </Message>
-          )
-        }
-      </ul>
+    <Form onSubmit={onSubmitHandler}>
+      <ChatArea
+        chats={chats}
+        isTyping={isTyping}
+        isPending={isPending}
+      />
       <InputGroup>
         <input
           type="text"
@@ -51,7 +27,7 @@ export default function ChatForm({
         />
         <button type="submit" disabled={isPending}>Submit</button>
       </InputGroup>
-    </ChatFormWrapper>
+    </Form>
   );
 }
 
@@ -59,15 +35,6 @@ export const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-const ChatFormWrapper = styled(Form)`
-  & > ul {
-    flex: 1;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #fff;
-    margin-bottom: 21px;
-  }
 `;
 export const InputGroup = styled.p`
   display: flex;
@@ -89,31 +56,6 @@ export const InputGroup = styled.p`
   }
   & button:disabled {
     background-color: #666;
-  }
-`;
-const Message = styled.li`
-  ${props => props.type === TO && 'text-align: right;'}
-  margin-bottom: 10px;
-  word-break: break-all;
-  &:last-child {
-    margin-bottom: 0;
-  }
-  & p {
-    text-align: left;
-    ${props => {
-      if (props.type === LOG) {
-        return 'font-weight: bold;font-style: italic;';
-      } else {
-        return (
-          'display: inline-block;'
-          + 'max-width: 70%;'
-          + 'line-height: 21px;'
-          + 'padding: 5px 15px;'
-          + 'border-radius: 5px;'
-          + 'box-shadow: 0px 0px 5px rgba(0, 0, 0, .2);'
-        );
-      }
-    }}
   }
 `;
 
