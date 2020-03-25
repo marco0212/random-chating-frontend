@@ -47,8 +47,9 @@ export default function ChatForm({
           type="text"
           value={InputValue}
           onChange={onChangeHandler}
+          disabled={isPending}
         />
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={isPending}>Submit</button>
       </InputGroup>
     </ChatFormWrapper>
   );
@@ -83,8 +84,11 @@ export const InputGroup = styled.p`
     flex: 1;
   }
   & button {
-    background-color: #666;
+    background-color: #4caf50;
     color: #fff;
+  }
+  & button:disabled {
+    background-color: #666;
   }
 `;
 const Message = styled.li`

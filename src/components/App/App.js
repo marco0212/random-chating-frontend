@@ -80,7 +80,7 @@ export default function App ({
   function chatSubmitHandler (e) {
     e.preventDefault();
 
-    if (chatText.trim()) {
+    if (chatText.trim() && !isPending) {
       const chatEle = ChatCreator(TO, chatText);
 
       addChat(chatEle);
