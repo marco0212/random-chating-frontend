@@ -1,5 +1,4 @@
-import reducer from './chats';
-import { initialState } from './chats';
+import reducer, { initialState } from './chats';
 import { addChat, resetChat } from '../actions';
 
 describe('chats reducer', () => {

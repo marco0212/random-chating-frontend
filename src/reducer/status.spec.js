@@ -1,5 +1,4 @@
-import reducer from './status';
-import { initialState } from './status';
+import reducer, { initialState } from './status';
 import { updateIsLogin, updateIsPending, updateIsTyping } from '../actions';
 
 describe('status reducer', () => {

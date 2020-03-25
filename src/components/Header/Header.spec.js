@@ -15,7 +15,7 @@ describe('<Header />', () => {
 
   it('should fired event handler on click button', () => {
     let count = 0;
-    const clickHandler = () => count++;
+    const clickHandler = () => (count) += 1;
     const { queryByText } = render(
       <Header isPending={false} onButtonClick={clickHandler} />
     );
