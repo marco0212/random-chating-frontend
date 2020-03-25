@@ -121,7 +121,7 @@ ChatForm.propTypes = {
   chats: propTypes.array,
   isTyping: propTypes.bool,
   isPending: propTypes.bool,
-  InputValue: propTypes.bool,
+  InputValue: propTypes.string,
   onChangeHandler: propTypes.func,
   onSubmitHandler: propTypes.func
 };
