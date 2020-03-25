@@ -7,7 +7,7 @@ import { chatTypes } from '../../constants';
 const { LOG, TYPING } = chatTypes;
 
 export default function ChatArea({
-  chats,
+  chats = [],
   isTyping,
   isPending
 }) {

@@ -6,7 +6,7 @@ const {
   UPDATE_IS_TYPING
 } = actionTypes;
 
-const initialState = {
+export const initialState = {
   isLogin: false,
   isPending: true,
   isTyping: false
