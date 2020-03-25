@@ -6,25 +6,26 @@ describe('<ChatForm />', () => {
   const eventObj = {};
   const someString = 'Hello world?';
 
-  it('should has require elements (text input, button)', () => {
+  it('should have require elements (text input, button)', () => {
     const { container, getByText } = render(<ChatForm/>);
 
     expect(container.querySelector('input[type="text"]')).toBeTruthy();
     expect(getByText('Submit')).toBeTruthy();
   });
 
-  it('should changes value depends on value prop', () => {
+  it('should change input value depends on prop', () => {
     const sampleFunction = () => {};
     const { getByDisplayValue, rerender } = render(
       <ChatForm InputValue={''} onChangeHandler={sampleFunction}/>
     );
 
     expect(getByDisplayValue('')).toBeTruthy();
+
     rerender(<ChatForm InputValue={someString}/>);
     expect(getByDisplayValue(someString)).toBeTruthy();
   });
 
-  it('should calls event handler when event is fired', () => {
+  it('should call event handler when event is fired', () => {
     const sampleFunction = (e) => {
       e.preventDefault();
       eventObj.isSubmit = true;

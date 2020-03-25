@@ -6,14 +6,14 @@ describe('<LoginForm />', () => {
   const eventObj = {};
   const someString = 'Hello world?';
 
-  it('should has require elements (text input, button)', () => {
+  it('should have require elements (text input, button)', () => {
     const { getByPlaceholderText, getByText } = render(<LoginForm/>);
 
     expect(getByPlaceholderText('Type your nickname')).toBeTruthy();
     expect(getByText('Submit')).toBeTruthy();
   });
 
-  it('should changes value depends on value prop', () => {
+  it('should change input value depends on value prop', () => {
     const sampleFunction = () => {};
     const { getByDisplayValue, rerender } = render(
       <LoginForm InputValue={''} onChangeHandler={sampleFunction}/>
@@ -24,7 +24,7 @@ describe('<LoginForm />', () => {
     expect(getByDisplayValue(someString)).toBeTruthy();
   });
 
-  it('should calls event handler when event is fired', () => {
+  it('should call event handler when event is fired', () => {
     const sampleFunction = (e) => {
       e.preventDefault();
       eventObj.isSubmit = true;

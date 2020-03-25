@@ -6,7 +6,7 @@ import { initialState } from '../../reducer/status';
 describe('<ChatArea />', () => {
   const { isPending, isTyping } = initialState;
 
-  it('should has user message depends on props', () => {
+  it('should have message that user send depends on props', () => {
     const { container, rerender, queryAllByText } = render(<ChatArea />);
     const messages = container.querySelectorAll('li');
 
@@ -19,7 +19,7 @@ describe('<ChatArea />', () => {
     expect(queryAllByText('Hello world').length).toBe(3);
   });
 
-  it('should has log messages depends on props', () => {
+  it('should have log messages depends on props', () => {
     const { queryByText, rerender } = render(
       <ChatArea
         isPending={isPending}
@@ -29,12 +29,14 @@ describe('<ChatArea />', () => {
 
     expect(queryByText('Looking for peer')).toBeTruthy();
     expect(queryByText('Typing...')).toBeNull();
+
     rerender(
       <ChatArea
         isPending={!isPending}
       />
     );
     expect(queryByText('Looking for peer')).toBeNull();
+    
     rerender(
       <ChatArea
         isTyping={!isTyping}
