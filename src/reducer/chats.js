@@ -1,7 +1,7 @@
 import { actionTypes } from '../constants';
 
 const { ADD_CHAT, RESET_CHAT } = actionTypes;
-const initialState = [];
+export const initialState = [];
 
 export default function (state = initialState, action) {
   switch (action.type) {
