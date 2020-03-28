@@ -2,12 +2,14 @@ import React from 'react';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
 
-export default function Header({ isPending, onButtonClick }) {
+export default function Header({ title, buttonText, disableButton, onButtonClick }) {
   return (
     <HeaderWrapper>
-      <h1>Hello Stranger?</h1>
+      <h1>{title}</h1>
       {
-        !isPending && <button onClick={onButtonClick}>next</button>
+        disableButton ? (
+          <button onClick={onButtonClick}>{buttonText}</button>
+        ) : undefined
       }
     </HeaderWrapper>
   );

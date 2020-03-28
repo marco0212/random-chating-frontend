@@ -112,7 +112,9 @@ export default function App({
   return (
     <>
       <Header
-        isPending={isPending}
+        title={'Hello Stranger?'}
+        buttonText={'Next'}
+        disableButton={isPending}
         onButtonClick={nextClickHandler}
       />
       <Main>

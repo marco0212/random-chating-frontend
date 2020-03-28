@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import App from '../components/App/App';
+import App from '../../components/App/App';
 import {
   addChat,
   resetChat,
   updateIsLogin,
   updateIsPending,
   updateIsTyping
-} from '../actions';
+} from '../../actions';
 
 const mapStateToProps = (state) => ({
   chats: state.chats,
